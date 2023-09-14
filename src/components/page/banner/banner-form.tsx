@@ -13,7 +13,7 @@ interface IProductFormProps {
   initialValues?: Partial<IProductFormValue>;
 }
 
-const ProductForm = ({ id, initialValues }: IProductFormProps) => {
+const BannerForm = ({ id, initialValues }: IProductFormProps) => {
   const [form] = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -120,4 +120,4 @@ const ProductForm = ({ id, initialValues }: IProductFormProps) => {
   );
 };
 
-export default React.memo(ProductForm);
+export default React.memo(BannerForm);

@@ -3,6 +3,7 @@ import { OAuthUserConfig } from "next-auth/providers";
 import CredentialsProvider, { CredentialsConfig } from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import {userLogin} from "@/apis/banner";
 
 const credentialsProviderOption: CredentialsConfig<{}> = {
   type: "credentials",
@@ -13,31 +14,41 @@ const credentialsProviderOption: CredentialsConfig<{}> = {
     password: { label: "Password", type: "password" },
   },
   async authorize(credentials: Record<string, unknown> | undefined) {
-    if (credentials && credentials.username === "admin" && credentials.password === "admin") {
-      return {
-        id: "1",
-        login: "admin",
-        name: "관리자",
-        email: "",
-        image: "",
-      };
+    try {
+      const user = await userLogin({
+        id: credentials!.username as string,
+        password: credentials!.password as string,
+      })
+
+      if (user) {
+        return  {
+          id: "1",
+          login: "admin",
+          name: "관리자",
+        };
+      } else {
+        // 로그인 실패
+        throw new Error('Invalid ID or Password')
+      }
+    } catch (error) {
+      throw new Error(error)
     }
 
     return null;
   },
 };
 
-const googleProviderOption: OAuthUserConfig<{}> = {
-  clientId: process.env.GOOGLE_CLIENT_ID || "",
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-  profile: (profile: any) => ({ ...profile, id: profile.sub, login: profile.email, image: profile.picture }),
-};
-
-const githubProviderOption: OAuthUserConfig<{}> = {
-  clientId: process.env.GITHUB_CLIENT_ID || "",
-  clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
-  profile: (profile: any) => ({ ...profile, image: profile.avatar_url }),
-};
+// const googleProviderOption: OAuthUserConfig<{}> = {
+//   clientId: process.env.GOOGLE_CLIENT_ID || "",
+//   clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+//   profile: (profile: any) => ({ ...profile, id: profile.sub, login: profile.email, image: profile.picture }),
+// };
+//
+// const githubProviderOption: OAuthUserConfig<{}> = {
+//   clientId: process.env.GITHUB_CLIENT_ID || "",
+//   clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+//   profile: (profile: any) => ({ ...profile, image: profile.avatar_url }),
+// };
 
 export default NextAuth({
   pages: {
@@ -47,19 +58,19 @@ export default NextAuth({
   },
   providers: [
     CredentialsProvider(credentialsProviderOption),
-    GoogleProvider(googleProviderOption),
-    GithubProvider(githubProviderOption),
+    // GoogleProvider(googleProviderOption),
+    // GithubProvider(githubProviderOption),
   ],
   callbacks: {
     jwt({ token, user }) {
       if (user) {
-        token.id = (user as Session["user"]).id;
-        token.login = (user as Session["user"]).login;
+        token.sub = (user as Session["user"]).id;
+        token.name = (user as Session["user"]).login;
       }
       return token;
     },
     session({ session, token }) {
-      session.user = { ...session.user, id: token.id as string, login: token.login as string };
+      session.user = { ...session.user, id: token.sub as string, name: token.name as string };
       return session;
     },
   },

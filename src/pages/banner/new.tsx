@@ -1,5 +1,5 @@
 import { getDefaultLayout, IDefaultLayoutPage, IPageHeader } from "@/components/layout/default-layout";
-import ProductForm from "@/components/page/sample/product/product-form";
+import ProductForm from "@/components/page/banner/banner-form";
 
 const pageHeader: IPageHeader = {
   title: "상품등록",

@@ -1,6 +1,6 @@
 import { getDefaultLayout, IDefaultLayoutPage, IPageHeader } from "@/components/layout/default-layout";
-import ProductList from "@/components/page/sample/product/product-list";
-import ProductSearch from "@/components/page/sample/product/product-search";
+import ProductList from "@/components/page/banner/banner-list";
+import ProductSearch from "@/components/page/banner/banner-search";
 
 const pageHeader: IPageHeader = {
   title: "상품 목록",

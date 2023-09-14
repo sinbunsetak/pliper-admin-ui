@@ -91,9 +91,9 @@ API와 관련된 코드와 Type을 관리합니다.
 세부사항은 `src/components/page/[동일한 페이지 경로]`에 컴포넌트로 분리합니다.
 
 - [src/pages/index.tsx](src/pages/index.tsx): 대시보드
-- [src/pages/sample/product/list.tsx](src/pages/sample/product/list.tsx): 상품 목록
-- [src/pages/sample/product/new.tsx](src/pages/sample/product/new.tsx): 상품 등록
-- [src/pages/sample/product/edit/[id].tsx](src/pages/sample/product/edit/[id].tsx): 상품 수정
+- [src/pages/sample/product/list.tsx](src/pages/banner/list.tsx): 상품 목록
+- [src/pages/sample/product/new.tsx](src/pages/banner/new.tsx): 상품 등록
+- [src/pages/sample/product/edit/[id].tsx](src/pages/banner/edit/[id].tsx): 상품 수정
 
 **컴포넌트**
 
@@ -102,9 +102,9 @@ API와 관련된 코드와 Type을 관리합니다.
 
 - [src/components/page/index/calendar-sample.tsx](src/components/page/index/calendar-sample.tsx): 캘린더 샘플 컴포넌트
 - [src/components/page/index/statistic-sample.tsx](src/components/page/index/statistic-sample.tsx): 통계 샘플 컴포넌트
-- [src/components/page/sample/product/product-form.tsx](src/components/page/sample/product/product-form.tsx): 상품 입력폼 (생성/수정 공통 사용) 컴포넌트
-- [src/components/page/sample/product/product-list.tsx](src/components/page/sample/product/product-list.tsx): 상품 목록 컴포넌트
-- [src/components/page/sample/product/product-search.tsx](src/components/page/sample/product/product-search.tsx): 상품 검색 컴포넌트
+- [src/components/page/sample/product/banner-form.tsx](src/components/page/banner/banner-form.tsx): 상품 입력폼 (생성/수정 공통 사용) 컴포넌트
+- [src/components/page/sample/product/banner-list.tsx](src/components/page/banner/banner-list.tsx): 상품 목록 컴포넌트
+- [src/components/page/sample/product/banner-search.tsx](src/components/page/banner/banner-search.tsx): 상품 검색 컴포넌트
 
 **샘플 이미지**
 

@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import numeral from "numeral";
 import React, { useCallback, useMemo, useState } from "react";
 
-const ProductList = () => {
+const BannerList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const router = useRouter();
 
@@ -151,7 +151,7 @@ const ProductList = () => {
           <Button className="btn-with-icon" icon={<Download />}>
             엑셀 다운로드
           </Button>
-          <Button type="primary" onClick={() => router.push("/sample/product/new")}>
+          <Button type="primary" onClick={() => router.push("/sample/banner/new")}>
             상품등록
           </Button>
         </div>
@@ -176,4 +176,4 @@ const ProductList = () => {
   );
 };
 
-export default React.memo(ProductList);
+export default React.memo(BannerList);

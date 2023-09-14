@@ -16,7 +16,7 @@ const statusOptions = [
   { label: "판매중단", value: "NOTSALE" },
 ];
 
-const ProductSearch = () => {
+const BannerSearch = () => {
   const [form] = useForm();
   const router = useRouter();
 
@@ -80,4 +80,4 @@ const ProductSearch = () => {
   );
 };
 
-export default React.memo(ProductSearch);
+export default React.memo(BannerSearch);
