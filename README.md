@@ -92,7 +92,7 @@ API와 관련된 코드와 Type을 관리합니다.
 
 - [src/pages/index.tsx](src/pages/index.tsx): 대시보드
 - [src/pages/sample/product/list.tsx](src/pages/banner/list.tsx): 상품 목록
-- [src/pages/sample/product/new.tsx](src/pages/banner/new.tsx): 상품 등록
+- [src/pages/sample/product/new.tsx](src/pages/banner/[id]/new.tsx): 상품 등록
 - [src/pages/sample/product/edit/[id].tsx](src/pages/banner/edit/[id].tsx): 상품 수정
 
 **컴포넌트**

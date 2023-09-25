@@ -1,12 +1,12 @@
 import { getDefaultLayout, IDefaultLayoutPage, IPageHeader } from "@/components/layout/default-layout";
-import ProductForm from "@/components/page/banner/banner-form";
+import BannerItemForm from "@/components/page/banner/item/banner-item-form";
 
 const pageHeader: IPageHeader = {
-  title: "상품등록",
+  title: "배너 이미지 등록",
 };
 
 const ProductNewPage: IDefaultLayoutPage = () => {
-  return <ProductForm initialValues={{ status: "NOTSALE" }} />;
+  return <BannerItemForm initialValues={{ status: "NOTSALE" }} />;
 };
 
 ProductNewPage.getLayout = getDefaultLayout;

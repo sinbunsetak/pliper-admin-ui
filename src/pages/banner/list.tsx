@@ -1,21 +1,20 @@
 import { getDefaultLayout, IDefaultLayoutPage, IPageHeader } from "@/components/layout/default-layout";
-import ProductList from "@/components/page/banner/banner-list";
-import ProductSearch from "@/components/page/banner/banner-search";
+import BannerItemList from "@/components/page/banner/item/banner-item-list";
+import BannerList from "@/components/page/banner/banner-list";
 
 const pageHeader: IPageHeader = {
-  title: "상품 목록",
+  title: "배너 목록",
 };
 
-const ProductListPage: IDefaultLayoutPage = () => {
+const BannerListPage: IDefaultLayoutPage = () => {
   return (
     <>
-      <ProductSearch />
-      <ProductList />
+      <BannerList />
     </>
   );
 };
 
-ProductListPage.getLayout = getDefaultLayout;
-ProductListPage.pageHeader = pageHeader;
+BannerListPage.getLayout = getDefaultLayout;
+BannerListPage.pageHeader = pageHeader;
 
-export default ProductListPage;
+export default BannerListPage;

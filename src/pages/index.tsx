@@ -7,6 +7,7 @@ import {Alert, Divider, Skeleton} from "antd";
 import React from "preact/compat";
 import {NextComponentType} from "next/dist/shared/lib/utils";
 import {ReactNode} from "react";
+import {useBanners} from "@/apis/banner";
 
 const pageHeader: IPageHeader = {
     title: "Welcome",
@@ -17,7 +18,7 @@ const IndexPage: IDefaultLayoutPage = () => {
     const {data, error} = useDashboard();
 
     return (
-        <>
+        <div>
             <h2 className="title">👋 {session.user.name || "관리자"}님 안녕하세요!</h2>
 
             <div className="my-5">
@@ -35,7 +36,7 @@ const IndexPage: IDefaultLayoutPage = () => {
             <h3 className="title">달력</h3>
 
             <CalendarSample/>
-        </>
+        </div>
     );
 };
 
