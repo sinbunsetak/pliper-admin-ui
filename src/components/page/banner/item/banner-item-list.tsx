@@ -1,10 +1,10 @@
 import DefaultTable from "@/components/shared/ui/default-table";
 import DefaultTableBtn from "@/components/shared/ui/default-table-btn";
-import { Alert, Breadcrumb, Button, MenuProps } from "antd";
+import { Alert, Breadcrumb, Button, MenuProps, Popconfirm } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useRouter } from "next/router";
 import React, { FC, useCallback, useMemo, useState } from "react";
-import { IBannerItem, useBannerById } from "@/apis/banner";
+import { IBanner, IBannerItem, useBannerById } from "@/apis/banner";
 import Link from "next/link";
 import { FileImageOutlined } from "@ant-design/icons";
 
@@ -48,7 +48,34 @@ const BannerItemList: FC<BannerItemListProps> = ({ bannerId }) => {
   };
   const hasSelected = selectedRowKeys.length > 0;
 
+  const handleDeleteItem = (id) => {
+
+  }
+
   const columns: ColumnsType<IBannerItem> = [
+    {
+      key: "action",
+      width: 120,
+      title: '관리',
+      align: "center",
+      render: (_value: unknown, record: IBannerItem) => {
+        return (
+          <span className="flex justify-center gap-2">
+            <Link href={`/banner/${record.bannerId}/edit/${record.id}`} className="px-2 py-1 text-sm btn">
+              수정
+            </Link>
+            <Popconfirm
+                title=" 삭제하시겠습니까?"
+                onConfirm={() => alert("삭제")}
+                okText="예"
+                cancelText="아니오"
+            >
+              <a className="px-2 py-1 text-sm btn">삭제</a>
+            </Popconfirm>
+          </span>
+        );
+      },
+    },
     {
       key: "order",
       width: 120,
@@ -74,6 +101,11 @@ const BannerItemList: FC<BannerItemListProps> = ({ bannerId }) => {
       title: "링크 URL",
       width: 150,
       dataIndex: "link",
+      render: (value: string) => {
+        return (
+          <span className={"underline"}><a target="_blank" href={value}>{value}</a></span>
+        );
+      },
     },
   ];
 

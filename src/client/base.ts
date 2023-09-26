@@ -9,3 +9,7 @@ export const fetchApi = ky.create({
     "Content-Type": "application/json",
   },
 });
+
+export const fetchApiByForm = ky.create({
+  prefixUrl: process.env.NEXT_PUBLIC_API_ENDPOINT,
+});
