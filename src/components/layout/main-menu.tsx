@@ -4,14 +4,14 @@ import React from "react";
 import Menu, { IMenu } from "./nav";
 
 const mainMenuData: IMenu[] = [
-  {
+  /*{
     id: "home",
     name: "홈",
     icon: <Home className="w-5 h-5" />,
     link: {
       path: "/",
     },
-  },
+  },*/
   {
     id: "banner",
     name: "배너 관리",
@@ -28,38 +28,37 @@ const mainMenuData: IMenu[] = [
   },
 ];
 
-const devMenuData: IMenu[] = [
-  {
-    id: "dev",
-    name: "사용 가이드",
-    icon: <Monitor className="w-5 h-5" />,
-    submenu: [
-      {
-        name: "폼",
-        link: {
-          path: "/sample/form",
-        },
-      },
-    ],
-  },
-];
+// const devMenuData: IMenu[] = [
+//   {
+//     id: "dev",
+//     name: "사용 가이드",
+//     icon: <Monitor className="w-5 h-5" />,
+//     submenu: [
+//       {
+//         name: "폼",
+//         link: {
+//           path: "/sample/form",
+//         },
+//       },
+//     ],
+//   },
+// ];
 
 const MainMenu = () => {
   return (
     <>
       <>
         <Divider orientation="left" plain>
-          메인
+          사이트 관리
         </Divider>
-
         <Menu data={mainMenuData} />
       </>
       <>
-        <Divider orientation="left" plain>
+        {/*<Divider orientation="left" plain>
           개발
         </Divider>
 
-        <Menu data={devMenuData} />
+        <Menu data={devMenuData} />*/}
       </>
     </>
   );

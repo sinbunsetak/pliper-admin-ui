@@ -23,16 +23,15 @@ const getBase64 = (file: RcFile): Promise<string> =>
 
 interface BannerItemFormProps {
   id?: string;
-  bannerId: number;
+  bannerId: number | string;
   initialValues?: Partial<IBannerItem>;
 }
 
 const BannerItemForm = ({ bannerId, id, initialValues }: BannerItemFormProps) => {
   const [form] = useForm();
-  const [isLoading, setIsLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
   const router = useRouter();
-
+  const [messageApi, contextHolder] = message.useMessage();
+  const [isLoading, setIsLoading] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -54,12 +53,14 @@ const BannerItemForm = ({ bannerId, id, initialValues }: BannerItemFormProps) =>
       const formData = new FormData();
       formData.append("alt", formValue.alt);
       formData.append("link", formValue.link);
-      formData.append("banner", formValue.banner.file);
-
       if (id) {
+        if (formValue.banner) {
+          formData.append("banner", formValue.banner.file);
+        }
         await updateBannerItem(bannerId, Number(id), formData);
         messageApi.success("수정되었습니다");
       } else {
+        formData.append("banner", formValue.banner.file);
         await createBannerItem(bannerId, formData);
         messageApi.success("생성되었습니다");
       }
@@ -154,7 +155,7 @@ const BannerItemForm = ({ bannerId, id, initialValues }: BannerItemFormProps) =>
             취소
           </Button>
           <Button htmlType="submit" type="primary" loading={isLoading}>
-            저장
+            {id ? "수정" : "저장"}
           </Button>
         </div>
       </DefaultForm>

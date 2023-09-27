@@ -8,6 +8,7 @@ import { useForm } from "antd/lib/form/Form";
 import { Search } from "lucide-react";
 import { useRouter } from "next/router";
 import React, { useCallback } from "react";
+import { IBannerItem } from "@/apis/banner";
 
 const statusOptions = [
   { label: "전체", value: "ALL" },
@@ -21,7 +22,7 @@ const BannerItemSearch = () => {
   const router = useRouter();
 
   const handleFinish = useCallback(
-    (formValue: IProductFormValue) => {
+    (formValue: IBannerItem) => {
       router.push({
         pathname: router.pathname,
         query: { ...router.query, ...formValue },
@@ -32,7 +33,7 @@ const BannerItemSearch = () => {
 
   return (
     <DefaultSearchForm form={form} onFinish={handleFinish}>
-      <FormSearch>
+      {/*<FormSearch>
         <FieldInline>
           <Form.Item label="기간" name="searchDateType" initialValue="created">
             <Select popupMatchSelectWidth={false}>
@@ -75,7 +76,7 @@ const BannerItemSearch = () => {
         <Button htmlType="submit" className="btn-with-icon" onClick={() => form.resetFields()}>
           초기화
         </Button>
-      </div>
+      </div>*/}
     </DefaultSearchForm>
   );
 };

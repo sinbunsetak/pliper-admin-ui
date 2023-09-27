@@ -1,12 +1,13 @@
 import DefaultTable from "@/components/shared/ui/default-table";
 import DefaultTableBtn from "@/components/shared/ui/default-table-btn";
-import { Alert, Breadcrumb, Button, MenuProps, Popconfirm } from "antd";
+import { Alert, Breadcrumb, Button, MenuProps, message, Popconfirm } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useRouter } from "next/router";
 import React, { FC, useCallback, useMemo, useState } from "react";
-import { IBanner, IBannerItem, useBannerById } from "@/apis/banner";
+import { deleteBannerItem, IBanner, IBannerItem, useBannerById } from "@/apis/banner";
 import Link from "next/link";
 import { FileImageOutlined } from "@ant-design/icons";
+import { addHttp } from "@/utils/utils";
 
 interface BannerItemListProps {
   bannerId: number;
@@ -15,7 +16,8 @@ interface BannerItemListProps {
 const BannerItemList: FC<BannerItemListProps> = ({ bannerId }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const router = useRouter();
-  const { data, error, isLoading } = useBannerById(bannerId);
+  const { data, error, isLoading, mutate } = useBannerById(bannerId);
+  const [m, contextHolder] = message.useMessage();
 
 
   const handleChangePage = useCallback(
@@ -48,15 +50,22 @@ const BannerItemList: FC<BannerItemListProps> = ({ bannerId }) => {
   };
   const hasSelected = selectedRowKeys.length > 0;
 
-  const handleDeleteItem = (id) => {
-
-  }
+  const handleDeleteItem = async (id: number) => {
+    try {
+      await deleteBannerItem(bannerId, id);
+    } catch (e: unknown) {
+      m.error("삭제가 실패하였습니다: " + e);
+      return;
+    }
+    mutate();
+    m.success("삭제가 완료되었습니다.");
+  };
 
   const columns: ColumnsType<IBannerItem> = [
     {
       key: "action",
       width: 120,
-      title: '관리',
+      title: "관리",
       align: "center",
       render: (_value: unknown, record: IBannerItem) => {
         return (
@@ -65,10 +74,10 @@ const BannerItemList: FC<BannerItemListProps> = ({ bannerId }) => {
               수정
             </Link>
             <Popconfirm
-                title=" 삭제하시겠습니까?"
-                onConfirm={() => alert("삭제")}
-                okText="예"
-                cancelText="아니오"
+              title=" 삭제하시겠습니까?"
+              onConfirm={() => handleDeleteItem(record.id)}
+              okText="예"
+              cancelText="아니오"
             >
               <a className="px-2 py-1 text-sm btn">삭제</a>
             </Popconfirm>
@@ -93,7 +102,7 @@ const BannerItemList: FC<BannerItemListProps> = ({ bannerId }) => {
       title: "배너 이미지",
       render: (value: number, record: IBannerItem) => {
         return (
-          <img alt={record.alt} src={record.imageUrl} />
+            <img className='m-h-96 w-auto' alt={record.alt} src={addHttp(record.imageUrl)} />
         );
       },
     },
@@ -115,6 +124,7 @@ const BannerItemList: FC<BannerItemListProps> = ({ bannerId }) => {
 
   return (
     <>
+      {contextHolder}
       <DefaultTableBtn className="justify-between">
         <Breadcrumb>
           <Breadcrumb.Item> <Link href="/banner/list">배너 목록</Link></Breadcrumb.Item>

@@ -1,6 +1,8 @@
 import { fetchApi, fetchApiByForm } from "@/client/base";
 import useSWR from "swr";
 
+export type ApiKey = string | number;
+
 
 export interface ICreateBannerRequest {
   location: string;
@@ -43,17 +45,25 @@ export const useBanners = () => {
 };
 
 //배너 조회
-export const useBannerById = (bannerId: number) => {
-  console.log("???", bannerId);
+export const useBannerById = (bannerId: ApiKey) => {
   return useSWR<IBanner>(`banner/${bannerId}`);
 };
 
+export const useBannerItem = (bannerId: ApiKey, itemId: ApiKey) => {
+  return useSWR<IBannerItem>(`banner/${bannerId}/item/${itemId}`);
+};
+
 // 배너 아이템 생성
-export const createBannerItem = (bannerId: number, formRequest: FormData) => {
+export const createBannerItem = (bannerId: ApiKey, formRequest: FormData) => {
   return fetchApiByForm.post(`banner/${bannerId}/item`, { body: formRequest });
 };
 
-export const updateBannerItem = (bannerId: number, id: number, formRequest: FormData) => {
-  return fetchApiByForm.post(`banner/${bannerId}/item/${id}`, { body: formRequest });
+export const deleteBannerItem = (bannerId: ApiKey, id: ApiKey) => {
+  return fetchApi.delete(`banner/${bannerId}/item/${id}`);
+};
+
+
+export const updateBannerItem = (bannerId: ApiKey , id: ApiKey, formRequest: FormData) => {
+  return fetchApiByForm.put(`banner/${bannerId}/item/${id}`, { body: formRequest });
 };
 
