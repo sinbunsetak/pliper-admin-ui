@@ -3,7 +3,7 @@ import { OAuthUserConfig } from "next-auth/providers";
 import CredentialsProvider, { CredentialsConfig } from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import {userLogin} from "@/apis/banner";
+import {userLogin} from "@/apis/auth";
 
 const credentialsProviderOption: CredentialsConfig<{}> = {
   type: "credentials",
@@ -30,7 +30,7 @@ const credentialsProviderOption: CredentialsConfig<{}> = {
         // 로그인 실패
         throw new Error('Invalid ID or Password')
       }
-    } catch (error) {
+    } catch (error: unknown) {
       throw new Error(error)
     }
 

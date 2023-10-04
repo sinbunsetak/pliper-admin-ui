@@ -53,6 +53,7 @@ const BannerItemForm = ({ bannerId, id, initialValues }: BannerItemFormProps) =>
 
       const formData = new FormData();
       formData.append("alt", formValue.alt);
+      formData.append("order", formValue.order+"");
       formData.append("link", formValue.link);
       if (id) {
         if (formValue.banner) {
