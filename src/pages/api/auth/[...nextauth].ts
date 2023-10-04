@@ -1,41 +1,42 @@
 import NextAuth, { Session } from "next-auth";
-import { OAuthUserConfig } from "next-auth/providers";
 import CredentialsProvider, { CredentialsConfig } from "next-auth/providers/credentials";
-import GithubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
-import {userLogin} from "@/apis/auth";
+import { userLogin } from "@/apis/auth";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const credentialsProviderOption: CredentialsConfig<{}> = {
-  type: "credentials",
-  id: "login-credentials",
-  name: "login-credentials",
-  credentials: {
-    username: { label: "Username", type: "text" },
-    password: { label: "Password", type: "password" },
-  },
-  async authorize(credentials: Record<string, unknown> | undefined) {
-    try {
-      const user = await userLogin({
-        id: credentials!.username as string,
-        password: credentials!.password as string,
-      })
+const credentialsProviderOption = (req: NextApiRequest, res: NextApiResponse): CredentialsConfig<{}> => {
+  return {
+    type: "credentials",
+    id: "login-credentials",
+    name: "login-credentials",
+    credentials: {
+      username: { label: "Username", type: "text" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials: Record<string, unknown> | undefined) {
+      try {
+        const user = await userLogin({
+          id: credentials!.username as string,
+          password: credentials!.password as string,
+        });
 
-      if (user) {
-        return  {
-          id: "1",
-          login: "admin",
-          name: "관리자",
-        };
-      } else {
-        // 로그인 실패
-        throw new Error('Invalid ID or Password')
+        if (user) {
+          const cookies = user.headers.get("set-cookie");
+          res.setHeader("Set-Cookie", cookies!);
+          return {
+            id: "1",
+            login: "admin",
+            name: "관리자",
+          };
+        } else {
+          // 로그인 실패
+          throw new Error("Invalid ID or Password");
+        }
+      } catch (error) {
+        throw new Error(error + "");
       }
-    } catch (error: unknown) {
-      throw new Error(error)
-    }
-
-    return null;
-  },
+      return null;
+    },
+  };
 };
 
 // const googleProviderOption: OAuthUserConfig<{}> = {
@@ -50,28 +51,30 @@ const credentialsProviderOption: CredentialsConfig<{}> = {
 //   profile: (profile: any) => ({ ...profile, image: profile.avatar_url }),
 // };
 
-export default NextAuth({
-  pages: {
-    signIn: "/login",
-    verifyRequest: "/login?verify=1",
-    error: "/login",
-  },
-  providers: [
-    CredentialsProvider(credentialsProviderOption),
-    // GoogleProvider(googleProviderOption),
-    // GithubProvider(githubProviderOption),
-  ],
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.sub = (user as Session["user"]).id;
-        token.name = (user as Session["user"]).login;
-      }
-      return token;
+export default (req: NextApiRequest, res: NextApiResponse) => {
+  return NextAuth(req, res, {
+    pages: {
+      signIn: "/login",
+      verifyRequest: "/login?verify=1",
+      error: "/login",
     },
-    session({ session, token }) {
-      session.user = { ...session.user, id: token.sub as string, name: token.name as string };
-      return session;
+    providers: [
+      CredentialsProvider(credentialsProviderOption(req, res)),
+      // GoogleProvider(googleProviderOption),
+      // GithubProvider(githubProviderOption),
+    ],
+    callbacks: {
+      jwt({ token, user }) {
+        if (user) {
+          token.sub = (user as Session["user"]).id;
+          token.name = (user as Session["user"]).login;
+        }
+        return token;
+      },
+      session({ session, token }) {
+        session.user = { ...session.user, id: token.sub as string, name: token.name as string };
+        return session;
+      },
     },
-  },
-});
+  });
+}

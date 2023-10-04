@@ -12,5 +12,5 @@ interface IUserLoginRequest {
 
 // 로그인 요청
 export const userLogin = (request: IUserLoginRequest) => {
-    return fetchApi.post(`login`, { body: JSON.stringify(request) });
+    return fetchApi.post(`login`, { body: JSON.stringify(request), credentials: "include",  });
 };
