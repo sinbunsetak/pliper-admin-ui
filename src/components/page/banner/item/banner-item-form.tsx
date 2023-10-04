@@ -2,14 +2,15 @@ import { IProductFormValue } from "@/client/sample/product";
 import DefaultForm from "@/components/shared/form/ui/default-form";
 import FormGroup from "@/components/shared/form/ui/form-group";
 import FormSection from "@/components/shared/form/ui/form-section";
-import { Button, Divider, Form, Input, message, Upload, UploadFile } from "antd";
+import { Breadcrumb, Button, Divider, Form, Input, message, Upload, UploadFile } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React, { useState } from "react";
 import { createBannerItem, IBannerItem, IBannerItemFormValue, updateBannerItem } from "@/apis/banner";
-import { InboxOutlined } from "@ant-design/icons";
+import { FileImageOutlined, InboxOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { RcFile } from "antd/es/upload";
 import Dragger from "antd/lib/upload/Dragger";
+import Link from "next/link";
 
 
 const getBase64 = (file: RcFile): Promise<string> =>
@@ -59,10 +60,12 @@ const BannerItemForm = ({ bannerId, id, initialValues }: BannerItemFormProps) =>
         }
         await updateBannerItem(bannerId, Number(id), formData);
         messageApi.success("수정되었습니다");
+        router.back();
       } else {
         formData.append("banner", formValue.banner.file);
         await createBannerItem(bannerId, formData);
         messageApi.success("생성되었습니다");
+        router.back();
       }
     } catch (e: unknown) {
       messageApi.error("에러가 발생했습니다");
@@ -83,6 +86,11 @@ const BannerItemForm = ({ bannerId, id, initialValues }: BannerItemFormProps) =>
 
           <Divider />
 
+          <FormGroup title="배너 순서*">
+            <Form.Item name="order" rules={[{ required: true, message: "필수값입니다" }]}>
+              <Input placeholder="링크 URL을 입력하세요"  inputMode={"numeric"} />
+            </Form.Item>
+          </FormGroup>
 
           <FormGroup title="배너 링크*">
             <Form.Item name="link" rules={[{ required: true, message: "필수값입니다" }]}>
@@ -90,7 +98,6 @@ const BannerItemForm = ({ bannerId, id, initialValues }: BannerItemFormProps) =>
             </Form.Item>
           </FormGroup>
 
-          <Divider />
 
           <FormGroup title="이미지 ALT*">
             <Form.Item name="alt" rules={[{ required: true, message: "필수값입니다" }]}>

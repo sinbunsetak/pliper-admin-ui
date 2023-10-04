@@ -102,7 +102,7 @@ const BannerItemList: FC<BannerItemListProps> = ({ bannerId }) => {
       title: "배너 이미지",
       render: (value: number, record: IBannerItem) => {
         return (
-            <img className='m-h-96 w-auto' alt={record.alt} src={addHttp(record.imageUrl)} />
+          <img className="m-h-96 w-auto" alt={record.alt} src={addHttp(record.imageUrl)} />
         );
       },
     },
